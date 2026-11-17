@@ -1,0 +1,5 @@
+retrieved_utc: 20261117T194357Z
+erddap: https://data.cioospacific.ca/erddap/
+dataset_id: BCSOP_daily
+constraint: time>= 1991-01-01
+rows: 156287
