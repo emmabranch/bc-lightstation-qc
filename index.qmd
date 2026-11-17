@@ -16,12 +16,12 @@ execute:
 ---
 
 ::: {.callout-note appearance="simple"}
-This is a personal project. I'm an epidemiologist and data analyst, and new to oceanographic data. This page records what I did, why I made each choice, and what I learned. I'd welcome corrections from people who know this data better than I do.
+This is a personal project, and I'm new to oceanographic data. This page records what I did, why I made each choice, and what I learned. I'd welcome corrections from people who know this data better than I do.
 :::
 
 ## Why I did this
 
-Much of my work in health research has been the part that rarely gets seen: cleaning, documenting, and governing data so that other people can trust it and reuse it. I wanted to see how the ocean observing community handles the same problems, so I took an open dataset from CIOOS Pacific and worked through it using the community's own standards for quality control and metadata.
+I'm an epidemiologist and data analyst, which mostly means I spend my time on the part of research nobody sees: cleaning, documenting, and looking after data so other people can actually trust it. I wanted to see how the ocean observing community deals with the same headaches, so I took an open dataset from CIOOS Pacific and worked through it using the community's own standards for quality control and metadata.
 
 The project has four parts:
 
