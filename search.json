@@ -60,7 +60,7 @@
     "href": "index.html#data-code-and-licence",
     "title": "BC lightstation sea temperatures",
     "section": "Data, code, and licence",
-    "text": "Data, code, and licence\n\nArchived release: TODO DOI\nSource data: British Columbia Shore Station Oceanographic Program, Institute of Ocean Sciences, Fisheries and Oceans Canada, via CIOOS Pacific. Contains information licensed under the Open Government Licence - Canada.\nBasemaps: Natural Earth (animated map); Esri World Gray Canvas (interactive map).\nCode: MIT licence. Derived data: CC-BY-4.0."
+    "text": "Data, code, and licence\n\nArchived release: Zenodo, doi.org/10.5281/zenodo.24326157\nSource data: British Columbia Shore Station Oceanographic Program, Institute of Ocean Sciences, Fisheries and Oceans Canada, via CIOOS Pacific. Contains information licensed under the Open Government Licence - Canada.\nBasemaps: Natural Earth (animated map); Esri World Gray Canvas (interactive map).\nCode: MIT licence. Derived data: CC-BY-4.0."
   },
   {
     "objectID": "index.html#references",
