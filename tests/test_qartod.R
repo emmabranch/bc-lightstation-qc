@@ -21,6 +21,10 @@ check("spike: gap in dates means not evaluated",
       qc_spike(c(10, 10, 10), as.Date(c("2015-01-01", "2015-01-02", "2015-01-05")), 2.5, 5),
       c(2, 2, 2))
 
+check("spike: good neighbour of a bad value is downgraded from FAIL to SUSPECT",
+      qc_spike(c(18.6, 18.8, 8.1, 17.8, 17.8), as.Date("2024-07-12") + 0:4, 2.5, 5),
+      c(2, 3, 4, 3, 2))
+
 check("flat line: run of 5 identical -> suspect at 5th",
       qc_flat_line(c(8, 8, 8, 8, 8, 9, 9), d, suspect_n = 5, fail_n = 10),
       c(1, 1, 1, 1, 3, 1, 1))

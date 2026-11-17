@@ -44,19 +44,26 @@ qc_gross_range <- function(x, fail_span, suspect_span) {
 # ---------------------------------------------------------------------------
 qc_spike <- function(x, date, suspect_threshold, fail_threshold) {
   n <- length(x)
-  flag <- rep(QC_NOT_EVAL, n)
+  flag  <- rep(QC_NOT_EVAL, n)
+  spike <- rep(NA_real_, n)
   if (n >= 3) {
     i <- 2:(n - 1)
-    prev_ok <- as.numeric(date[i] - date[i - 1]) == 1
-    next_ok <- as.numeric(date[i + 1] - date[i]) == 1
-    ref   <- (x[i - 1] + x[i + 1]) / 2
-    spike <- abs(x[i] - ref)
-    ok <- prev_ok & next_ok & !is.na(spike)
-    f <- rep(QC_NOT_EVAL, length(i))
-    f[ok] <- QC_PASS
-    f[ok & spike > suspect_threshold] <- QC_SUSPECT
-    f[ok & spike > fail_threshold]    <- QC_FAIL
-    flag[i] <- f
+    ok <- as.numeric(date[i] - date[i - 1]) == 1 & as.numeric(date[i + 1] - date[i]) == 1
+    s  <- abs(x[i] - (x[i - 1] + x[i + 1]) / 2)
+    s[!ok] <- NA
+    spike[i] <- s
+    ev <- !is.na(spike)
+    flag[ev] <- QC_PASS
+    flag[ev & spike > suspect_threshold] <- QC_SUSPECT
+    flag[ev & spike > fail_threshold]    <- QC_FAIL
+    # Neighbour adjustment (documented extension to QARTOD): one bad value
+    # inflates the spike score of the good values beside it. A FAIL is kept
+    # only if its spike is larger than both neighbours' spikes; otherwise it
+    # is downgraded to SUSPECT.
+    for (k in which(flag == QC_FAIL)) {
+      nb <- spike[c(k - 1, k + 1)]
+      if (any(!is.na(nb) & nb > spike[k])) flag[k] <- QC_SUSPECT
+    }
   }
   flag[is.na(x)] <- QC_MISSING
   flag
@@ -135,7 +142,9 @@ qc_aggregate <- function(..., x) {
 qc_station <- function(df, value_col, cfg) {
   df <- df[order(df$date), ]
   x <- df[[value_col]]
-  df$qc_gross_range <- qc_gross_range(x, cfg$gross_range$fail_span, cfg$gross_range$suspect_span)
+  span <- cfg$gross_range$suspect_span_by_station[[unique(df$station)]]
+  if (is.null(span)) span <- cfg$gross_range$suspect_span
+  df$qc_gross_range <- qc_gross_range(x, cfg$gross_range$fail_span, span)
   df$qc_spike       <- qc_spike(x, df$date, cfg$spike$suspect, cfg$spike$fail)
   df$qc_rate_of_change <- qc_rate_of_change(x, df$date, cfg$rate_of_change$n_dev,
                                             cfg$rate_of_change$window_days,

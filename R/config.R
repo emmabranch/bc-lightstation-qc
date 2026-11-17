@@ -18,7 +18,14 @@ MAP_END   <- as.Date("2017-12-31")  # NE Pacific marine heatwave ("the Blob")
 QC_CONFIG <- list(
   gross_range = list(
     fail_span    = c(-2.5, 35),  # outside physically plausible seawater temps
-    suspect_span = c(0, 22)      # outside what BC coastal surface water usually reaches
+    suspect_span = c(0, 22),     # outer coast default
+    # Strait of Georgia stations: shallow, sheltered water that warms more in
+    # summer. Observed multi-station warm events reach 25.4 degC.
+    suspect_span_by_station = list(
+      chrome_island_lightstation   = c(0, 26),
+      `departure_bay_(pbs)`        = c(0, 26),
+      entrance_island_lightstation = c(0, 26)
+    )
   ),
   spike = list(suspect = 2.5, fail = 5.0),   # degC departure from neighbour mean
   rate_of_change = list(n_dev = 3, window_days = 30, min_obs = 10),
