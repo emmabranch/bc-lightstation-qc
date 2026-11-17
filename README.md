@@ -29,10 +29,17 @@ Companion project: [BC Salmon Explorer](https://emmabranch.shinyapps.io/bc-salmo
 
 | Test | Setting | Rationale | Changed after review? |
 |---|---|---|---|
-| Gross range | FAIL outside -2.5 to 35 degC; SUSPECT outside 0 to 22 degC | TODO | TODO |
-| Spike | SUSPECT > 2.5 degC, FAIL > 5 degC from neighbour mean | TODO | TODO |
-| Rate of change | SUSPECT if day-to-day change > 3 SD of previous 30 days (min 10 obs) | TODO | TODO |
-| Flat line | SUSPECT at 5, FAIL at 10 identical consecutive daily values | TODO | TODO |
+| Gross range | FAIL outside -2.5 to 35 degC. SUSPECT outside 0 to 22 degC (outer coast) or 0 to 26 degC (Chrome Island, Departure Bay, Entrance Island) | Values above 22 degC at the three Strait of Georgia stations occurred on the same dates across several stations in warm summers, so they are likely real | Yes: added station-specific limits (47 SUSPECT reduced to 0) |
+| Spike | SUSPECT > 2.5 degC, FAIL > 5 degC from neighbour mean. A FAIL is downgraded to SUSPECT if a neighbour has a larger spike | A single bad value (8.1 between 18.8 and 17.8, Departure Bay, July 2024) caused its good neighbour to FAIL as well | Yes: added neighbour adjustment with a unit test (4 FAIL reduced to 3) |
+| Rate of change | SUSPECT if day-to-day change > 3 SD of previous 30 days (min 10 obs) | Suspects spread evenly across stations and months, about 0.7% of values | No |
+| Flat line | SUSPECT at 5, FAIL at 10 identical consecutive daily values | Longest run: 8.5 degC for about 19 days at Race Rocks (Feb 2010). Some runs reflect whole-degree recording (see Known issues) | No |
+
+A Nootka Point value of 4.6 degC on 30 March 2022 (spike FAIL) was cross-checked against salinity, which rose rather than fell, so a cold freshwater event is unlikely and the FAIL was kept.
+
+## Known issues
+
+- **Recording precision varies.** Values are normally recorded to 0.1 degC, but in some station-years 30% to 65% of values are whole numbers (Egg Island 2004 to 2005, Chrome Island 2008 to 2011, Race Rocks 2009, Nootka Point 1994 to 1995). This suggests periods of whole-degree recording. Values were not altered.
+- **Station IDs are kept as in the source**, including `mcinees_island_lightstation` (likely McInnes Island).
 
 ## Outputs (`data/output/`)
 
