@@ -4,14 +4,14 @@
     "href": "index.html",
     "title": "BC lightstation sea temperatures",
     "section": "",
-    "text": "This is a personal project. I’m an epidemiologist and data analyst, and new to oceanographic data. This page records what I did, why I made each choice, and what I learned. I’d welcome corrections from people who know this data better than I do."
+    "text": "This is a personal project, and I’m new to oceanographic data. This page records what I did, why I made each choice, and what I learned. I’d welcome corrections from people who know this data better than I do."
   },
   {
     "objectID": "index.html#why-i-did-this",
     "href": "index.html#why-i-did-this",
     "title": "BC lightstation sea temperatures",
     "section": "Why I did this",
-    "text": "Why I did this\nMuch of my work in health research has been the part that rarely gets seen: cleaning, documenting, and governing data so that other people can trust it and reuse it. I wanted to see how the ocean observing community handles the same problems, so I took an open dataset from CIOOS Pacific and worked through it using the community’s own standards for quality control and metadata.\nThe project has four parts:\n\nQuality control using tests from the IOOS QARTOD manuals\nDocumentation as a CF and ACDD compliant NetCDF file, a CSV, and a data dictionary\nAnalysis of the 2014 to 2016 northeast Pacific marine heatwave, as seen at BC lightstations\nA reproducible workflow in R, archived with a DOI"
+    "text": "Why I did this\nI’m an epidemiologist and data analyst, which mostly means I spend my time on the part of research nobody sees: cleaning, documenting, and looking after data so other people can actually trust it. I wanted to see how the ocean observing community deals with the same headaches, so I took an open dataset from CIOOS Pacific and worked through it using the community’s own standards for quality control and metadata.\nThe project has four parts:\n\nQuality control using tests from the IOOS QARTOD manuals\nDocumentation as a CF and ACDD compliant NetCDF file, a CSV, and a data dictionary\nAnalysis of the 2014 to 2016 northeast Pacific marine heatwave, as seen at BC lightstations\nA reproducible workflow in R, archived with a DOI"
   },
   {
     "objectID": "index.html#the-data",
