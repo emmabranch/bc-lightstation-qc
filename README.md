@@ -4,11 +4,13 @@
 
 Daily sea surface temperature (SST) from British Columbia lightstations, pulled from the [CIOOS Pacific ERDDAP](https://data.cioospacific.ca/erddap/tabledap/BCSOP_daily.html) server, annotated with automated quality control flags adapted from the IOOS [QARTOD](https://ioos.noaa.gov/project/qartod/) manuals, and published as a CF/ACDD-compliant NetCDF file, a tidy CSV, and a data dictionary.
 
-Tutorial: https://emmabranch.github.io/bc-lightstation-qc/
+Project site: https://emmabranch.github.io/bc-lightstation-qc/
 
 Companion project: [BC Salmon Explorer](https://emmabranch.shinyapps.io/bc-salmon-explorer) ([repo](https://github.com/emmabranch/bc-salmon-explorer)), which shows salmon data for the same coast and years.
 
 ![SST anomaly heatmap](figures/sst_anomaly_heatmap.png)
+
+This is a personal project: I'm an epidemiologist and data analyst, new to oceanographic data, working through an open CIOOS dataset using the ocean observing community's own standards for quality control and metadata.
 
 ## What this project does
 
@@ -17,7 +19,7 @@ Companion project: [BC Salmon Explorer](https://emmabranch.shinyapps.io/bc-salmo
 - Applies four QARTOD tests (gross range, spike, rate of change, flat line) plus an aggregate flag, using the standard flag scheme: 1 PASS, 2 NOT_EVALUATED, 3 SUSPECT, 4 FAIL, 9 MISSING.
 - Never alters source values. Flags sit alongside the data, linked in the NetCDF with `ancillary_variables` and CF quality-flag standard names.
 - Writes CF-1.8 and ACDD-1.3 metadata, checked with the IOOS Compliance Checker (report in `docs/`).
-- Maps monthly SST anomalies across the 2014 to 2016 northeast Pacific marine heatwave.
+- Maps monthly SST anomalies across the 2014 to 2016 northeast Pacific marine heatwave: an animated map, a station-by-month heatmap, and an interactive map with year buttons and per-station popups.
 
 ## Important limitations
 

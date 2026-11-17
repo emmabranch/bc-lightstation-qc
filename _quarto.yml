@@ -5,10 +5,11 @@ project:
     - index.qmd
 
 website:
-  title: "BC lightstation SST QC"
+  title: "BC lightstation sea temperatures"
   repo-url: https://github.com/emmabranch/bc-lightstation-qc
   repo-actions: [source, issue]
 
 format:
   html:
     theme: cosmo
+    css: styles.css
