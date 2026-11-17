@@ -1,0 +1,14 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+
+website:
+  title: "BC lightstation SST QC"
+  repo-url: https://github.com/emmabranch/bc-lightstation-qc
+  repo-actions: [source, issue]
+
+format:
+  html:
+    theme: cosmo

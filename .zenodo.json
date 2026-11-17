@@ -1,0 +1,12 @@
+{
+  "title": "BC lightstation sea surface temperature with QARTOD-style quality flags (R workflow and data)",
+  "description": "R workflow that retrieves daily BC lightstation sea surface temperature (BCSOP) from CIOOS Pacific ERDDAP, applies automated quality control tests adapted from IOOS QARTOD, and publishes CF-1.8/ACDD-1.3 NetCDF and CSV outputs with a data dictionary. Independent portfolio product, not an official DFO or CIOOS release. Source data: Institute of Ocean Sciences, Fisheries and Oceans Canada, Open Government Licence - Canada.",
+  "upload_type": "dataset",
+  "creators": [{"name": "Cox, Emma"}],
+  "license": "cc-by-4.0",
+  "keywords": ["sea surface temperature", "British Columbia", "lightstation", "QARTOD", "quality control", "ERDDAP", "CIOOS", "NetCDF", "marine heatwave"],
+  "related_identifiers": [
+    {"identifier": "https://data.cioospacific.ca/erddap/tabledap/BCSOP_daily.html", "relation": "isDerivedFrom", "resource_type": "dataset"},
+    {"identifier": "https://github.com/emmabranch/bc-lightstation-qc", "relation": "isSupplementTo"}
+  ]
+}

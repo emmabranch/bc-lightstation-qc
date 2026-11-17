@@ -1,0 +1,8 @@
+.Rproj.user/
+.Rhistory
+.RData
+_site/
+_freeze/
+.quarto/
+data/raw/BCSOP_daily_2*.csv
+data/processed/*.rds
