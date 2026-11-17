@@ -182,7 +182,7 @@ quarto render                    # this page, including the interactive map
 
 ## Data, code, and licence
 
-- **Archived release:** TODO DOI
+- **Archived release:** Zenodo, [doi.org/10.5281/zenodo.24326157](https://doi.org/10.5281/zenodo.24326157)
 - **Source data:** British Columbia Shore Station Oceanographic Program, Institute of Ocean Sciences, Fisheries and Oceans Canada, via CIOOS Pacific. Contains information licensed under the Open Government Licence - Canada.
 - **Basemaps:** Natural Earth (animated map); Esri World Gray Canvas (interactive map).
 - **Code:** MIT licence. **Derived data:** CC-BY-4.0.

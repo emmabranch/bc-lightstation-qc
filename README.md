@@ -1,6 +1,6 @@
 # BC lightstation SST: QARTOD-style quality control in R
 
-<!-- After the Zenodo release, paste the DOI badge here -->
+[![DOI](https://zenodo.org/badge/1461879521.svg)](https://doi.org/10.5281/zenodo.24326157)
 
 Daily sea surface temperature (SST) from British Columbia lightstations, pulled from the [CIOOS Pacific ERDDAP](https://data.cioospacific.ca/erddap/tabledap/BCSOP_daily.html) server, annotated with automated quality control flags adapted from the IOOS [QARTOD](https://ioos.noaa.gov/project/qartod/) manuals, and published as a CF/ACDD-compliant NetCDF file, a tidy CSV, and a data dictionary.
 
