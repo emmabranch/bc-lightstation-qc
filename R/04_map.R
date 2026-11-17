@@ -38,6 +38,24 @@ anom <- monthly |>
          month_date = as.Date(sprintf("%d-%02d-01", year, month))) |>
   filter(month_date >= MAP_START, month_date <= MAP_END)
 
+# Readable labels for figures. Source IDs are kept unchanged in the data;
+# "mcinees" in the source is labelled McInnes Island here (see README).
+station_labels <- c(
+  langara_island_lightstation   = "Langara Island",
+  bonilla_island_lightstation   = "Bonilla Island",
+  mcinees_island_lightstation   = "McInnes Island",
+  egg_island_lightstation       = "Egg Island",
+  pine_island_lightstation      = "Pine Island",
+  kains_island_lightstation     = "Kains Island",
+  nootka_point_lightstation     = "Nootka Point",
+  chrome_island_lightstation    = "Chrome Island",
+  entrance_island_lightstation  = "Entrance Island",
+  `departure_bay_(pbs)`         = "Departure Bay (PBS)",
+  amphitrite_point_lightstation = "Amphitrite Point",
+  race_rocks_lightstation       = "Race Rocks"
+)
+anom <- anom |>
+  mutate(station_label = coalesce(unname(station_labels[station]), station))
 readr::write_csv(anom, "data/output/monthly_sst_anomalies_2013_2017.csv")
 
 # ---- Basemap ---------------------------------------------------------------
@@ -89,8 +107,8 @@ anim_save("figures/sst_anomaly_2013_2017.gif", anim)
 
 # ---- Static heatmap: stations ordered north to south ------------------------
 p_heat <- anom |>
-  mutate(station = reorder(station, latitude)) |>
-  ggplot(aes(month_date, station, fill = anomaly)) +
+  mutate(station_label = reorder(station_label, latitude)) |>
+  ggplot(aes(month_date, station_label, fill = anomaly)) +
   geom_tile() +
   scale_fill_gradient2(low = "#2166ac", mid = "white", high = "#b2182b",
                        limits = c(-lim, lim), oob = scales::squish,

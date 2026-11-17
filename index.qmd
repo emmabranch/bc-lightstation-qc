@@ -16,7 +16,7 @@ execute:
 
 ## Why this tutorial
 
-TODO: two or three sentences in your own voice. Suggested angle: you come from epidemiology, where data cleaning, provenance, and governance are routine, and you wanted to learn how the ocean observing community handles the same problems.
+I'm an epidemiologist and data analyst, which mostly means I spend my time on the part of research nobody sees: cleaning, documenting, and looking after data so other people can actually trust it. I wanted to see how the ocean observing community deals with the same headaches, so I built this using open data from CIOOS Pacific and the community's own standards for quality control and metadata. I'm new to ocean data, so I've flagged the conventions that caught me out along the way.
 
 ## The data
 
@@ -36,7 +36,7 @@ Things that surprised me as a newcomer:
 
 - The station name is in a variable called `profile`. It carries the CF attribute `cf_role = "timeseries_id"`, which is how software knows it identifies each time series.
 - `TEMPTC01` is a code from the BODC parameter vocabulary, which many oceanographic data centres use. The human-readable meaning lives in the `standard_name` attribute: `sea_water_temperature`.
-- TODO: add one more of your own.
+- Time is a sampling date, not a timestamp. Samples are taken near daytime high tide, so the actual time of day shifts with the tides. The data provider notes that this creates a 14-day cycle in the daily values, which matters for quality control tests that compare one day with the next.
 
 ## Quality control with QARTOD
 
@@ -61,7 +61,14 @@ I implemented four tests in base R (`R/qartod.R`) with unit tests (`tests/test_q
 
 ### Adapting tests written for real-time sensors
 
-TODO: explain, in your words, why each threshold in `R/config.R` was chosen and what you changed after looking at the plots. Mention the 14-day tidal sampling artifact and how it affects the spike test.
+The QARTOD manuals were written mainly for high-frequency, real-time sensors. These are daily bucket samples, so I treated every threshold as a starting point, looked at what each test flagged, and adjusted where the flags didn't match what a person would question. All settings live in `R/config.R`, and the decisions are logged in the README.
+
+- **Gross range.** I started with a suspect limit of 22 degC. All 47 values above it were at three Strait of Georgia stations (Chrome Island, Departure Bay, Entrance Island), and they occurred on the same dates across stations in warm summers. A broken thermometer wouldn't do that, so I raised the suspect limit to 26 degC for those stations only.
+- **Spike.** Each value is compared with the mean of the days either side. At Departure Bay in July 2024, a value of 8.1 between 18.8 and 17.8 was clearly an error, but it also made its good neighbour fail. I added a rule that a FAIL is downgraded to SUSPECT if a neighbouring value has a larger spike, and wrote a unit test for it.
+- **Rate of change.** Flags were spread evenly across stations and months, with no sign of a single faulty record, so I kept the defaults.
+- **Flat line.** The longest run was 8.5 degC for about 19 days at Race Rocks in February 2010. I kept the thresholds, but found that some runs reflect a change in recording precision (below).
+
+The 14-day tidal sampling artifact adds real day-to-day variation, which is one reason the spike and rate of change thresholds are looser than they would be for a continuous sensor.
 
 One behaviour worth knowing: a large spike also pulls its neighbours toward SUSPECT, because the test compares each value with the mean of the values either side.
 
@@ -72,9 +79,14 @@ readr::read_csv("data/processed/qc_summary.csv", show_col_types = FALSE) |>
   knitr::kable()
 ```
 
-![Example station, 2014 to 2016, coloured by aggregate flag](figures/qc_REPLACE_STATION.png)
+![Example station, 2014 to 2016, coloured by aggregate flag](figures/qc_race_rocks_lightstation.png)
 
-TODO: one paragraph on what the flags caught. Did any FAIL values look like real errors (for example a typo like 81.0 for 8.1)?
+About 1% of values were flagged: 1,484 SUSPECT and 35 FAIL out of roughly 140,700 observations.
+
+Two findings stood out:
+
+- **A value checked against a second variable.** At Nootka Point on 30 March 2022, temperature dropped to 4.6 degC between 9.5 and 11.3. A cold freshwater pulse could in theory cause that, but salinity rose that day rather than falling, so I kept the FAIL.
+- **Recording precision varies.** Values are normally recorded to 0.1 degC, so about 10% should be whole numbers by chance. In some station-years it was 30% to 65% (Egg Island 2004 to 2005, Chrome Island 2008 to 2011, Race Rocks 2009, Nootka Point 1994 to 1995). This suggests periods of whole-degree recording, and it explains several flat-line flags. I didn't alter any values; I documented it as a known issue so users can decide how to treat those periods.
 
 ## Making it analysis-ready: CF and ACDD metadata
 
@@ -85,7 +97,9 @@ The NetCDF uses the CF "orthogonal multidimensional" layout for time series, whe
 
 I checked the file with the IOOS Compliance Checker.
 
-TODO: summarise the result honestly, including any ACDD recommendations you did not address.
+The file passes all CF-1.8 checks. For ACDD-1.3, the only remaining items are four optional vertical attributes (`geospatial_vertical_min`, `geospatial_vertical_max`, `geospatial_vertical_positive`, and `geospatial_bounds_vertical_crs`). I left these out on purpose: the data are surface samples with no depth variable, and adding them without one triggers a different warning. The full report is in `docs/compliance_report.txt`.
+
+The same data are also provided as a CSV with a data dictionary (`data/output/data_dictionary.csv`), for people who don't work with NetCDF.
 
 ## The 2014 to 2016 marine heatwave
 
@@ -95,7 +109,11 @@ Anomalies are departures from each station's 1991 to 2020 average for that calen
 
 ![Station by month view, north at top](figures/sst_anomaly_heatmap.png)
 
-TODO: describe what you see. When did anomalies start and end at these stations? Were northern and southern stations different?
+At nearly every station, 2013 and early 2014 were close to normal, with a cool spell in early 2014. From around autumn 2014, warm anomalies appeared almost everywhere at once. They were strongest in the winter of 2014 to 2015, reaching about +3 degC at McInnes Island, and persisted through 2015 and into 2016, with another strong warm spell in spring 2016. Most stations were back near normal by late 2016.
+
+The three Strait of Georgia stations (Chrome Island, Entrance Island, and Departure Bay) warmed as well, but more patchily, with some near-normal or cool months in mid-to-late 2015. That's a pattern I'd want to look into further rather than explain from this figure alone.
+
+White cells are months with fewer than 15 valid daily values, which I excluded rather than average from too few samples.
 
 ## Connection to salmon
 
