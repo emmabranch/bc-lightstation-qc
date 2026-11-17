@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this workflow or data, please cite it as below, and cite the BCSOP source data."
 title: "BC lightstation sea surface temperature with QARTOD-style quality flags"
 authors:
-  - family-names: Cox
+  - family-names: Branch
     given-names: Emma
 version: 1.0.0
 license: MIT
