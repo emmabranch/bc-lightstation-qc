@@ -43,7 +43,14 @@ readr::write_csv(anom, "data/output/monthly_sst_anomalies_2013_2017.csv")
 # ---- Basemap ---------------------------------------------------------------
 # bcmaps serves BC Government open data; layers download on first use.
 # BC Albers (EPSG:3005) is the standard projection for BC-wide maps.
-basemap <- bcmaps::bc_bound_hres()
+# Natural Earth coastline (public domain). Uses the high-resolution version
+# if rnaturalearthhires is installed, otherwise medium resolution.
+basemap <- rnaturalearth::ne_countries(
+  scale = if (requireNamespace("rnaturalearthhires", quietly = TRUE)) "large" else "medium",
+  country = c("Canada", "United States of America"),
+  returnclass = "sf"
+) |>
+  st_transform(3005)
 pts <- anom |> st_as_sf(coords = c("longitude", "latitude"), crs = 4326) |>
   st_transform(3005)
 bbox <- st_bbox(st_buffer(pts, 60000))
@@ -55,15 +62,24 @@ p_map <- ggplot() +
   geom_sf(data = pts, aes(fill = anomaly), shape = 21, size = 5, colour = "grey20") +
   scale_fill_gradient2(low = "#2166ac", mid = "white", high = "#b2182b",
                        limits = c(-lim, lim), oob = scales::squish,
-                       name = "SST anomaly\n(°C vs 1991–2020)") +
+                       breaks = -3:3,
+                       labels = c("\u2264 -3", "-2", "-1", "0", "1", "2", "\u2265 3"),
+                       name = "SST anomaly\n(\u00b0C vs 1991-2020)",
+                       guide = guide_colourbar(display = "gradient")) +
   coord_sf(xlim = bbox[c(1, 3)], ylim = bbox[c(2, 4)], crs = 3005) +
   labs(title = "BC lightstation sea surface temperature anomaly",
        subtitle = "{format(as.Date(current_frame), '%B %Y')}",
-       caption = "Data: BCSOP daily lightstation SST via CIOOS Pacific ERDDAP (OGL-Canada). QARTOD-flagged values excluded.") +
+       caption = "Data: BCSOP daily lightstation SST via CIOOS Pacific ERDDAP (OGL-Canada). QARTOD-flagged values excluded. Basemap: Natural Earth.") +
   theme_void(base_size = 12) +
   theme(plot.background = element_rect(fill = "white", colour = NA),
-        plot.caption = element_text(size = 7, hjust = 0)) +
-  transition_manual(month_date)
+        plot.caption = element_text(size = 7, hjust = 0),
+        panel.background = element_rect(fill = "#e8f1f7", colour = NA),
+        legend.ticks = element_line(colour = "grey20"),
+        legend.position = "inside",
+        legend.position.inside = c(0.15, 0.25),
+        legend.background = element_rect(fill = "white", colour = "grey80"),
+        legend.margin = margin(8, 10, 16, 8)) +
+        transition_manual(month_date)
 
 dir.create("figures", showWarnings = FALSE)
 anim <- animate(p_map, nframes = n_distinct(anom$month_date), fps = 4,
