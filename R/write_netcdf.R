@@ -113,6 +113,13 @@ write_sst_netcdf <- function(flagged, path, global_atts) {
     time_coverage_end = format(max(dates)),
     time_coverage_duration = sprintf("P%dD", n_t - 1),
     time_coverage_resolution = "P1D",
+    # Bounding box as WKT. With EPSG:4326 the axis order is latitude, longitude.
+    geospatial_bounds = with(stations, sprintf(
+      "POLYGON ((%.4f %.4f, %.4f %.4f, %.4f %.4f, %.4f %.4f, %.4f %.4f))",
+      min(latitude), min(longitude), max(latitude), min(longitude),
+      max(latitude), max(longitude), min(latitude), max(longitude),
+      min(latitude), min(longitude))),
+    geospatial_bounds_crs = "EPSG:4326",
     date_created = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
   )
   for (a in names(c(global_atts, auto))) ncatt_put(nc, 0, a, c(global_atts, auto)[[a]])

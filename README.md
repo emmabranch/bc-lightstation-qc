@@ -40,6 +40,7 @@ A Nootka Point value of 4.6 degC on 30 March 2022 (spike FAIL) was cross-checked
 
 - **Recording precision varies.** Values are normally recorded to 0.1 degC, but in some station-years 30% to 65% of values are whole numbers (Egg Island 2004 to 2005, Chrome Island 2008 to 2011, Race Rocks 2009, Nootka Point 1994 to 1995). This suggests periods of whole-degree recording. Values were not altered.
 - **Station IDs are kept as in the source**, including `mcinees_island_lightstation` (likely McInnes Island).
+- **Compliance:** the NetCDF passes the IOOS Compliance Checker for CF-1.8 with no issues. For ACDD-1.3, the only remaining items are four optional vertical attributes (`geospatial_vertical_min`, `_max`, `_positive`, `geospatial_bounds_vertical_crs`), omitted because the data are surface samples with no depth variable. Full report: `docs/compliance_report.txt`.
 
 ## Outputs (`data/output/`)
 

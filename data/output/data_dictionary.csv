@@ -1,0 +1,11 @@
+variable,type,units,cf_standard_name,description,allowed_values
+station,string,,,"Lightstation name (source variable `profile`, the timeseries_id)",
+latitude,float,degrees_north,latitude,Station latitude (median of source rows),48 to 55
+longitude,float,degrees_east,longitude,Station longitude (median of source rows),-134 to -122
+date,date,,time,Sampling date (samples taken near daytime high tide),YYYY-MM-DD
+sst,float,degree_C,sea_water_temperature,"Bucket sea surface temperature, unaltered from source TEMPTC01",blank = missing
+qc_gross_range,integer,,gross_range_test_quality_flag,QARTOD gross range test,"1,2,3,4,9"
+qc_spike,integer,,spike_test_quality_flag,QARTOD spike test,"1,2,3,4,9"
+qc_rate_of_change,integer,,rate_of_change_test_quality_flag,QARTOD rate of change test (suspect only),"1,2,3,9"
+qc_flat_line,integer,,flat_line_test_quality_flag,QARTOD flat line test,"1,3,4,9"
+qc_aggregate,integer,,aggregate_quality_flag,Worst flag across the four tests,"1,2,3,4,9"
