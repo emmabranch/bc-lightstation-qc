@@ -4,15 +4,15 @@
 
 Daily sea surface temperature (SST) from British Columbia lightstations, pulled from the [CIOOS Pacific ERDDAP](https://data.cioospacific.ca/erddap/tabledap/BCSOP_daily.html) server, annotated with automated quality control flags adapted from the IOOS [QARTOD](https://ioos.noaa.gov/project/qartod/) manuals, and published as a CF/ACDD-compliant NetCDF file, a tidy CSV, and a data dictionary.
 
-Project site: https://emmabranch.github.io/bc-lightstation-qc/
+**Live site:** https://emmabranch.github.io/bc-lightstation-qc/ · **More projects:** [github.com/emmabranch](https://github.com/emmabranch)
 
 Companion project: [BC Salmon Explorer](https://emmabranch.shinyapps.io/bc-salmon-explorer) ([repo](https://github.com/emmabranch/bc-salmon-explorer)), which shows salmon data for the same coast and years.
 
 ![SST anomaly heatmap](figures/sst_anomaly_heatmap.png)
 
-This is a personal project: I'm an epidemiologist and data analyst, new to oceanographic data, working through an open CIOOS dataset using the ocean observing community's own standards for quality control and metadata.
+> This is an independent portfolio product, not an official DFO or CIOOS dataset. For authoritative data, use the source.
 
-## What this project does
+## What it does
 
 - Retrieves BCSOP daily lightstation data from 1991 onward with `rerddap`, logging the exact request.
 - Keeps stations with at least 80% daily coverage over the 1991 to 2020 climate normal period.
@@ -21,11 +21,11 @@ This is a personal project: I'm an epidemiologist and data analyst, new to ocean
 - Writes CF-1.8 and ACDD-1.3 metadata, checked with the IOOS Compliance Checker (report in `docs/`).
 - Maps monthly SST anomalies across the 2014 to 2016 northeast Pacific marine heatwave: an animated map, a station-by-month heatmap, and an interactive map with year buttons and per-station popups.
 
-## Important limitations
+## Data and licences
 
-- QARTOD tests were designed mainly for real-time, high-frequency sensor data. These are daily bucket samples taken near daytime high tide, so thresholds were adapted and are documented below.
-- Daily values contain a 14-day tidal-cycle sampling artifact (noted by the data provider). This affects the spike and rate of change tests.
-- This is an independent portfolio product, not an official DFO or CIOOS dataset. For authoritative data, use the source.
+Source: British Columbia Shore Station Oceanographic Program (BCSOP), Institute of Ocean Sciences, Fisheries and Oceans Canada, distributed by CIOOS Pacific. Contains information licensed under the [Open Government Licence - Canada](https://open.canada.ca/en/open-government-licence-canada).
+
+Code: MIT licence. Derived data: CC-BY-4.0, with attribution to the source above.
 
 ## QC decisions
 
@@ -53,7 +53,7 @@ A Nootka Point value of 4.6 degC on 30 March 2022 (spike FAIL) was cross-checked
 | `data_dictionary.csv` | Variable definitions, units, CF standard names, allowed values |
 | `monthly_sst_anomalies_2013_2017.csv` | Monthly anomalies used in the map |
 
-## Reproduce
+## How to reproduce
 
 ```bash
 Rscript tests/test_qartod.R
@@ -68,8 +68,15 @@ quarto render
 
 `R/05_interactive_map.R` has no separate step: it runs automatically during `quarto render`, which builds the interactive map on the site.
 
-## Data source and licence
+## Limitations
 
-Source: British Columbia Shore Station Oceanographic Program (BCSOP), Institute of Ocean Sciences, Fisheries and Oceans Canada, distributed by CIOOS Pacific. Contains information licensed under the [Open Government Licence - Canada](https://open.canada.ca/en/open-government-licence-canada).
+- QARTOD tests were designed mainly for real-time, high-frequency sensor data. These are daily bucket samples taken near daytime high tide, so thresholds were adapted and are documented in QC decisions above.
+- Daily values contain a 14-day tidal-cycle sampling artifact (noted by the data provider). This affects the spike and rate of change tests.
 
-Code: MIT licence. Derived data: CC-BY-4.0, with attribution to the source above.
+## About me
+
+This is a personal project: I'm new to oceanographic data, and worked through an open CIOOS dataset using the ocean observing community's own standards for quality control and metadata.
+
+I'm Emma Branch, an epidemiologist and data analyst in British Columbia, and a PhD candidate in Population and Public Health at the University of British Columbia. I've spent about 10 years working with health research data, including registry analytics, REDCap database design, data governance, and performance measurement. I mostly work in R, SAS, and SQL, and build reports and tools with Quarto, Shiny, leaflet, and Power BI. Lately I've been applying the same habits to environmental and ocean data, mostly because I like maps and fish.
+
+[More projects](https://github.com/emmabranch) · [LinkedIn](https://www.linkedin.com/in/embranch/) · emma.branch@gmail.com
