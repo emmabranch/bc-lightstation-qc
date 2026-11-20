@@ -84,9 +84,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-a94d1237f1a720a987c398781f573eb7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-e027dd02e081a4a27c6046b829b66f82.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-a94d1237f1a720a987c398781f573eb7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-2f9cc1d674fa1dd73f1ea7b99ff2baf2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-ce28dc478f2ebd4eb1a6835b57648128.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-2f9cc1d674fa1dd73f1ea7b99ff2baf2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -746,6 +746,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       if (qfoot) qfoot.parentNode.insertBefore(foot, qfoot);
       else document.body.appendChild(foot);
     }
+    /* On phones, close the navbar menu after a link is tapped. Links to a
+       section of the same page don't reload it, so the menu would stay open. */
+    document.querySelectorAll(".navbar-collapse .nav-link:not(.dropdown-toggle)").forEach(function (link) {
+      link.addEventListener("click", function () {
+        var menu = document.querySelector(".navbar-collapse.show");
+        if (menu && window.bootstrap) window.bootstrap.Collapse.getOrCreateInstance(menu).hide();
+      });
+    });
     /* Hide Quarto's empty footer columns so they don't add space on phones */
     document.querySelectorAll(".nav-footer-left, .nav-footer-right").forEach(function (el) {
       if (!el.children.length && !el.textContent.replace(/[\s\u00a0]/g, "")) el.style.display = "none";
