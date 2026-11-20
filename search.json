@@ -53,7 +53,7 @@
     "href": "index.html#how-to-reproduce",
     "title": "BC lightstation sea temperatures. Checked, documented, and mapped.",
     "section": "How to reproduce",
-    "text": "How to reproduce\nThe full workflow is on GitHub. From the repository folder:\nRscript tests/test_qartod.R      # unit tests for the QC functions\nRscript R/01_download.R          # retrieve data from CIOOS Pacific ERDDAP\nRscript R/02_qc.R                # run QARTOD tests, write QC summary and plots\nRscript R/03_write_outputs.R     # NetCDF, CSV, and data dictionary\nRscript R/04_map.R               # animated map and heatmap\nRscript R/06_banner.R            # banner stripes for this page\ncompliance-checker --test=cf:1.8 --test=acdd:1.3 data/output/bc_lightstation_sst_qc.nc\nquarto render                    # this page, including the interactive map"
+    "text": "How to reproduce\nThe full workflow is on GitHub. From the repository folder:\nRscript tests/test_qartod.R      # unit tests for the QC functions\nRscript R/01_download.R          # retrieve data from CIOOS Pacific ERDDAP\nRscript R/02_qc.R                # run QARTOD tests, write QC summary and plots\nRscript R/03_write_outputs.R     # NetCDF, CSV, and data dictionary\nRscript R/04_map.R               # animated map and heatmap\nRscript R/06_banner.R            # banner stripes for this page\ncompliance-checker --test=cf:1.8 --test=acdd:1.3 data/output/bc_lightstation_sst_qc.nc\nquarto render                    # this page, including the interactive map\nR/05_interactive_map.R has no separate step: it runs automatically during quarto render, which builds the interactive map above."
   },
   {
     "objectID": "index.html#data-code-and-licence",
