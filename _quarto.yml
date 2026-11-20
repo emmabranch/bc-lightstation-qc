@@ -3,13 +3,35 @@ project:
   output-dir: _site
   render:
     - index.qmd
+  resources:
+    - figures/*.png
 
 website:
   title: "BC lightstation sea temperatures"
+  favicon: favicon.svg
+  site-url: https://emmabranch.github.io/bc-lightstation-qc/
   repo-url: https://github.com/emmabranch/bc-lightstation-qc
-  repo-actions: [source, issue]
+  navbar:
+    left:
+      - href: "index.qmd#the-data"
+        text: Data
+      - href: "index.qmd#quality-control"
+        text: Quality control
+      - href: "index.qmd#outputs-and-metadata"
+        text: Outputs
+      - href: "index.qmd#the-2014-to-2016-marine-heatwave"
+        text: Heatwave
+      - href: "index.qmd#what-i-learned"
+        text: What I learned
+    right:
+      - text: "DOI"
+        href: https://doi.org/10.5281/zenodo.24326157
+      - icon: github
+        href: https://github.com/emmabranch/bc-lightstation-qc
+  page-footer:
+    center: "Personal project by Emma Branch. Not an official DFO or CIOOS product."
 
 format:
   html:
-    theme: cosmo
+    theme: [flatly, theme.scss]
     css: styles.css

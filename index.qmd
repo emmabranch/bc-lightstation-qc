@@ -1,21 +1,75 @@
 ---
-title: "BC lightstation sea temperatures"
-subtitle: "Quality control, documentation, and the 2014 to 2016 marine heatwave"
-author: "Emma Branch"
-date: last-modified
+pagetitle: "BC lightstation sea temperatures"
+page-layout: article
+toc: false
 format:
   html:
-    toc: true
     code-fold: true
     code-summary: "Show code"
-    code-tools: true
 execute:
   freeze: auto
   warning: false
   message: false
 ---
 
-::: {.callout-note appearance="simple"}
+```{r}
+#| label: headline-numbers
+#| echo: false
+library(dplyr)
+library(htmltools)
+
+qc_out <- readr::read_csv("data/output/bc_lightstation_sst_qc.csv", show_col_types = FALSE,
+                          col_select = c("station", "date", "sst", "qc_aggregate"))
+anom   <- readr::read_csv("data/output/monthly_sst_anomalies_2013_2017.csv", show_col_types = FALSE)
+
+obs      <- qc_out |> filter(!is.na(sst))
+yrs      <- range(as.integer(format(obs$date, "%Y")))
+pct_flag <- mean(obs$qc_aggregate %in% c(3, 4)) * 100
+last_obs <- format(max(obs$date), "%B %Y")
+peak     <- anom |> filter(month_date >= as.Date("2014-01-01"), month_date < as.Date("2017-01-01")) |>
+  slice_max(anomaly, n = 1)
+```
+
+::::: {.hero-full .column-screen style="background-image: url('figures/banner_stripes.png');"}
+
+:::: {.hero-inner}
+
+[Personal data project by Emma Branch · R · Quarto · CIOOS open data]{.eyebrow}
+
+# BC lightstation sea temperatures. [Checked, documented, and mapped.]{.accent}
+
+Quality control, metadata, and the 2014 to 2016 marine heatwave, using daily data from British Columbia's lightstations and the ocean observing community's own standards.
+
+[Explore the heatwave map](#explore-by-year){.btn .btn-accent} [How I did it](#quality-control){.btn .btn-ghost}
+
+[Background: coast-wide average sea surface temperature anomaly at 12 lightstations, one stripe per month, January 1991 to `r last_obs`. Red is warmer than the 1991 to 2020 average and blue is cooler.]{.hero-note}
+
+::::
+
+<svg class="hero-wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,40 L1440,90 L0,90 Z" fill="#fbfaf7"/></svg>
+
+:::::
+
+```{r}
+#| label: stats
+#| echo: false
+#| column: page
+div(
+  class = "stat-row lift",
+  div(class = "stat-box", div(class = "num", n_distinct(obs$station)),
+      div(class = "lab", "lightstations with 80% or more coverage of 1991 to 2020")),
+  div(class = "stat-box", div(class = "num", format(nrow(obs), big.mark = ",")),
+      div(class = "lab", glue::glue("daily observations, {yrs[1]} to {yrs[2]}"))),
+  div(class = "stat-box", div(class = "num", 4),
+      div(class = "lab", "QARTOD tests, tuned and unit-tested")),
+  div(class = "stat-box", div(class = "num", sprintf("%.1f%%", pct_flag)),
+      div(class = "lab", "of values flagged SUSPECT or FAIL; none altered")),
+  div(class = "stat-box", div(class = "num", sprintf("+%.1f°C", peak$anomaly)),
+      div(class = "lab", glue::glue("peak monthly anomaly ({peak$station_label}, {format(peak$month_date, '%B %Y')})")))
+)
+```
+
+::: {.project-note}
 This is a personal project, and I'm new to oceanographic data. This page records what I did, why I made each choice, and what I learned. I'd welcome corrections from people who know this data better than I do.
 :::
 
@@ -83,8 +137,13 @@ The data provider notes that sampling near high tide creates a 14-day cycle in d
 ### What the flags caught
 
 ```{r}
+test_labels <- c(qc_aggregate = "Aggregate (worst of the four)", qc_gross_range = "Gross range",
+                 qc_spike = "Spike", qc_rate_of_change = "Rate of change", qc_flat_line = "Flat line")
 readr::read_csv("data/processed/qc_summary.csv", show_col_types = FALSE) |>
-  knitr::kable()
+  dplyr::mutate(test = factor(test_labels[test], levels = test_labels)) |>
+  dplyr::arrange(test) |>
+  dplyr::select(Test = test, PASS, SUSPECT, FAIL, NOT_EVALUATED, MISSING) |>
+  knitr::kable(format.args = list(big.mark = ","))
 ```
 
 ![Race Rocks, 2014 to 2016, coloured by aggregate flag](figures/qc_race_rocks_lightstation.png)
@@ -176,6 +235,7 @@ Rscript R/01_download.R          # retrieve data from CIOOS Pacific ERDDAP
 Rscript R/02_qc.R                # run QARTOD tests, write QC summary and plots
 Rscript R/03_write_outputs.R     # NetCDF, CSV, and data dictionary
 Rscript R/04_map.R               # animated map and heatmap
+Rscript R/06_banner.R            # banner stripes for this page
 compliance-checker --test=cf:1.8 --test=acdd:1.3 data/output/bc_lightstation_sst_qc.nc
 quarto render                    # this page, including the interactive map
 ```

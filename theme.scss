@@ -1,0 +1,187 @@
+/*-- scss:defaults --*/
+/* Shared look with the other portfolio sites (fish stock status, housing indicators) */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;800&display=swap');
+
+$primary:   #1f4e79;
+$secondary: #5b7083;
+$body-bg:    #fbfaf7;
+$body-color: #1f2a33;
+$link-color: #1f6fb2;
+
+$navbar-bg: #0b2233;
+$navbar-fg: #d6e2ec;
+$navbar-hl: #ffffff;
+$footer-bg: #0b2233;
+$footer-fg: #c9d6e0;
+
+$font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+$headings-font-family:   "Fraunces", Georgia, serif;
+$headings-font-weight:   700;
+$border-radius: 10px;
+
+/*-- scss:rules --*/
+
+/* ---------- Type and headings ---------- */
+h1, h2, h3 { letter-spacing: -0.01em; }
+h2 {
+  border-bottom: none !important;
+  padding-bottom: 0;
+  margin-top: 2.8rem;
+}
+h2::after {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 4px;
+  border-radius: 2px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, #2471a3, #16a085);
+}
+h3 { margin-top: 1.8rem; }
+html { scroll-padding-top: 70px; }
+
+/* ---------- Navbar and footer ---------- */
+.navbar { box-shadow: 0 2px 14px rgba(0, 0, 0, 0.18); }
+.navbar-title { font-family: $headings-font-family; font-weight: 800; }
+.navbar .nav-link { font-weight: 500; }
+.nav-footer { font-size: 0.85rem; }
+
+/* ---------- Full-bleed data hero ---------- */
+.hero-full {
+  position: relative;
+  margin-top: -2.9rem;
+  background-size: 100% 100%;
+  background-color: #0b2233;
+  color: #fff;
+  overflow: hidden;
+  z-index: 0 !important;
+}
+.hero-full::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(95, 212, 192, 0.25) 0%, rgba(95, 212, 192, 0) 40%),
+    linear-gradient(100deg, rgba(8, 26, 40, 0.97) 0%, rgba(8, 26, 40, 0.88) 45%, rgba(8, 26, 40, 0.45) 100%);
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 5rem 2rem 8rem;
+}
+.hero-full h1 {
+  color: #fff;
+  font-size: clamp(2.4rem, 5.2vw, 4.3rem);
+  font-weight: 800;
+  line-height: 1.04;
+  margin: 0.6rem 0 1.3rem;
+  border: none;
+}
+.hero-full h1 .accent { display: block; color: #5fd4c0; }
+.hero-full p { font-size: 1.15rem; max-width: 42rem; opacity: 0.93; }
+.hero-full .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+.hero-full .btn { margin: 1rem 0.6rem 0 0; }
+.hero-full .hero-note { font-size: 0.78rem; opacity: 0.7; margin-top: 2.4rem; max-width: 46rem; }
+.hero-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 80px;
+  z-index: 1;
+}
+
+/* ---------- Buttons ---------- */
+.btn { border-radius: 999px; font-weight: 600; padding: 0.55rem 1.25rem; }
+.btn-accent { background: #5fd4c0; color: #0b2233; border: none; }
+.btn-accent:hover { background: #82e2d2; color: #0b2233; }
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+}
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.18); color: #fff; }
+
+/* ---------- Stat boxes, overlapping the hero ---------- */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin: 0 0 1.6rem;
+}
+.stat-box {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  border-top: 4px solid #2471a3;
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08), 0 8px 20px rgba(16, 42, 67, 0.06);
+}
+.stat-box:nth-child(2) { border-top-color: #16a085; }
+.stat-box:nth-child(3) { border-top-color: #8e44ad; }
+.stat-box:nth-child(4) { border-top-color: #d98c00; }
+.stat-box:nth-child(5) { border-top-color: #c0392b; }
+.stat-box .num {
+  font-family: $headings-font-family;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0b2233;
+  line-height: 1.05;
+}
+.stat-box .lab { font-size: 0.86rem; color: #5b6770; margin-top: 0.2rem; }
+
+div.cell:has(.stat-row.lift) {
+  position: relative;
+  z-index: 10 !important;
+  margin-top: -4.5rem;
+}
+div.cell:has(.stat-row.lift) .cell-output-display { overflow: visible !important; }
+.stat-row.lift { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 0; }
+.stat-row.lift .stat-box { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(6px); }
+@media (max-width: 900px) {
+  .stat-row.lift { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Note under the hero ---------- */
+.project-note {
+  font-size: 0.95rem;
+  color: #3d4a55;
+  background: #eef5f7;
+  border-left: 4px solid #16a085;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  margin: 0.4rem 0 1.4rem;
+}
+
+/* ---------- Figures, map, and tables as soft panels ---------- */
+main img.img-fluid {
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08), 0 8px 22px rgba(16, 42, 67, 0.07);
+}
+.leaflet-container {
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08), 0 10px 26px rgba(16, 42, 67, 0.10);
+}
+.table {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.06);
+}
+.table thead th { background: #eef3f7; border-bottom: none; }
+
+/* ---------- Folded code ---------- */
+details.code-fold summary { color: #5b7083; font-size: 0.9rem; }
+div.sourceCode { border-radius: 10px; }
