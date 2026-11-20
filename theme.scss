@@ -1,8 +1,17 @@
 /*-- scss:defaults --*/
-/* Colours, fonts, navbar, headings, and footer come from the shared brand kit
+/* Fonts, navbar, headings, links, footer, hero, and stat boxes come from the shared brand kit
    (_brand.yml and brand.scss). This file keeps only what is special to this site. */
 
 /*-- scss:rules --*/
+
+/* ---------- Project colours: Deep ocean ---------- */
+:root {
+  --eb-accent: #1f5f99;
+  --eb-accent-2: #4aa3df;
+  --eb-accent-light: #8ccaf2;
+  --eb-hero-glow: rgba(74, 163, 223, 0.28);
+  --eb-hero-shade: 8, 26, 40;
+}
 
 /* ---------- Spacing ---------- */
 h1, h2, h3 { letter-spacing: -0.01em; }
@@ -10,111 +19,15 @@ h2 { margin-top: 2.8rem; }
 h3 { margin-top: 1.8rem; }
 html { scroll-padding-top: 70px; }
 
-/* ---------- Full-bleed data hero ---------- */
-.hero-full {
-  position: relative;
-  margin-top: -2.9rem;
-  background-size: 100% 100%;
-  background-color: #0b2233;
-  color: #fff;
-  overflow: hidden;
-  z-index: 0 !important;
-}
-.hero-full::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 80% 20%, rgba(95, 212, 192, 0.25) 0%, rgba(95, 212, 192, 0) 40%),
-    linear-gradient(100deg, rgba(8, 26, 40, 0.97) 0%, rgba(8, 26, 40, 0.88) 45%, rgba(8, 26, 40, 0.45) 100%);
-}
-.hero-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 5rem 2rem 8rem;
-}
-.hero-full h1 {
-  color: #fff;
-  font-size: clamp(2.4rem, 5.2vw, 4.3rem);
-  font-weight: 800;
-  line-height: 1.04;
-  margin: 0.6rem 0 1.3rem;
-  border: none;
-}
-.hero-full h1 .accent { display: block; color: #5fd4c0; }
-.hero-full p { font-size: 1.15rem; max-width: 42rem; opacity: 0.93; }
-.hero-full .eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.78rem;
-  font-weight: 600;
-  opacity: 0.8;
-}
-.hero-full .btn { margin: 1rem 0.6rem 0 0; }
-.hero-full .hero-note { font-size: 0.78rem; opacity: 0.7; margin-top: 2.4rem; max-width: 46rem; }
-.hero-wave {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  width: 100%;
-  height: 80px;
-  z-index: 1;
-}
-
-/* ---------- Buttons ---------- */
-.btn { border-radius: 999px; font-weight: 600; padding: 0.55rem 1.25rem; }
-.btn-accent { background: #5fd4c0; color: #0b2233; border: none; }
-.btn-accent:hover { background: #82e2d2; color: #0b2233; }
-.btn-ghost {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(4px);
-}
-.btn-ghost:hover { background: rgba(255, 255, 255, 0.18); color: #fff; }
-
-/* ---------- Stat boxes, overlapping the hero ---------- */
-.stat-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 14px;
-  margin: 0 0 1.6rem;
-}
-.stat-box {
-  background: #fff;
-  border-radius: 14px;
-  padding: 1rem 1.1rem;
-  border-top: 4px solid #2471a3;
-  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08), 0 8px 20px rgba(16, 42, 67, 0.06);
-}
+/* ---------- Stat boxes: one colour each ---------- */
+.stat-box:nth-child(1) { border-top-color: #2471a3; }
 .stat-box:nth-child(2) { border-top-color: #16a085; }
 .stat-box:nth-child(3) { border-top-color: #8e44ad; }
 .stat-box:nth-child(4) { border-top-color: #d98c00; }
 .stat-box:nth-child(5) { border-top-color: #c0392b; }
-.stat-box .num {
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #0b2233;
-  line-height: 1.05;
-}
-.stat-box .lab { font-size: 0.86rem; color: #5b6770; margin-top: 0.2rem; }
-
-div.cell:has(.stat-row.lift) {
-  position: relative;
-  z-index: 10 !important;
-  margin-top: -4.5rem;
-}
-div.cell:has(.stat-row.lift) .cell-output-display { overflow: visible !important; }
-.stat-row.lift { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 0; }
-.stat-row.lift .stat-box { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(6px); }
+.stat-row.lift { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 @media (max-width: 900px) {
   .stat-row.lift { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .stat-box .num { font-size: 1.7rem; }
-  .stat-box { padding: 0.9rem 0.9rem; }
 }
 
 /* ---------- Note under the hero ---------- */
