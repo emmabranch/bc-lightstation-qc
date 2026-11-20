@@ -66,6 +66,8 @@ compliance-checker --test=cf:1.8 --test=acdd:1.3 data/output/bc_lightstation_sst
 quarto render
 ```
 
+`R/05_interactive_map.R` has no separate step: it runs automatically during `quarto render`, which builds the interactive map on the site.
+
 ## Data source and licence
 
 Source: British Columbia Shore Station Oceanographic Program (BCSOP), Institute of Ocean Sciences, Fisheries and Oceans Canada, distributed by CIOOS Pacific. Contains information licensed under the [Open Government Licence - Canada](https://open.canada.ca/en/open-government-licence-canada).

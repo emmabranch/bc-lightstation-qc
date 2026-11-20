@@ -240,6 +240,8 @@ compliance-checker --test=cf:1.8 --test=acdd:1.3 data/output/bc_lightstation_sst
 quarto render                    # this page, including the interactive map
 ```
 
+`R/05_interactive_map.R` has no separate step: it runs automatically during `quarto render`, which builds the interactive map above.
+
 ## Data, code, and licence
 
 - **Archived release:** Zenodo, [doi.org/10.5281/zenodo.24326157](https://doi.org/10.5281/zenodo.24326157)
