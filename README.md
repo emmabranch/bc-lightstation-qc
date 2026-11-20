@@ -1,4 +1,4 @@
-# BC lightstation SST: QARTOD-style quality control in R
+# BC lightstation sea temperatures: quality control, documentation, and the 2014 to 2016 marine heatwave
 
 [![DOI](https://zenodo.org/badge/1461879521.svg)](https://doi.org/10.5281/zenodo.24326157)
 
@@ -61,6 +61,7 @@ Rscript R/01_download.R
 Rscript R/02_qc.R
 Rscript R/03_write_outputs.R
 Rscript R/04_map.R
+Rscript R/06_banner.R
 compliance-checker --test=cf:1.8 --test=acdd:1.3 data/output/bc_lightstation_sst_qc.nc
 quarto render
 ```
