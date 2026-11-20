@@ -9,3 +9,5 @@ data/processed/*.rds
 
 /.quarto/
 **/*.quarto_ipynb
+
+PLAN.md
