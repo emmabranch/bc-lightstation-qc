@@ -1,10 +1,12 @@
 cff-version: 1.2.0
-message: "If you use this workflow or data, please cite it as below, and cite the BCSOP source data."
+message: "If you use this workflow or data, please cite it as below, and cite the BCSOP source data. Code: MIT licence. Derived data: CC BY 4.0."
 title: "BC lightstation sea surface temperature with QARTOD-style quality flags"
 authors:
   - family-names: Branch
     given-names: Emma
 version: 1.0.0
-license: MIT
+license:
+  - MIT
+  - CC-BY-4.0
 repository-code: "https://github.com/emmabranch/bc-lightstation-qc"
 doi: 10.5281/zenodo.24326157
