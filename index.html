@@ -84,9 +84,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2f9cc1d674fa1dd73f1ea7b99ff2baf2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-ce28dc478f2ebd4eb1a6835b57648128.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-2f9cc1d674fa1dd73f1ea7b99ff2baf2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d422db6126f99728a064a48d47f032f7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-ef665dcef0f75bb56d4f47e7afb220c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d422db6126f99728a064a48d47f032f7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -738,6 +738,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   document.addEventListener("DOMContentLoaded", function () {
     var bar = document.querySelector(".eb-topbar");
     if (bar) document.body.insertBefore(bar, document.body.firstChild);
+    /* Optional hero for single-page reports (report-hero.html): put it
+       straight after the top bar, above the report itself. */
+    var rhero = document.querySelector(".eb-report-hero");
+    if (rhero) {
+      if (bar) bar.parentNode.insertBefore(rhero, bar.nextSibling);
+      else document.body.insertBefore(rhero, document.body.firstChild);
+      document.body.classList.add("has-report-hero");
+      /* The report card is lifted over the hero, which makes each section's
+         offsetTop relative to the card instead of the page. Quarto's table of
+         contents reads offsetTop, so give each section its true page position. */
+      document.querySelectorAll("main.content section[id]").forEach(function (sec) {
+        Object.defineProperty(sec, "offsetTop", {
+          configurable: true,
+          get: function () { return this.getBoundingClientRect().top + window.scrollY; }
+        });
+      });
+      /* Optional background stripes drawn by R inside the report
+         (a div with class "eb-hero-stripes"): move them into the hero. */
+      var stripes = document.querySelector(".eb-hero-stripes");
+      if (stripes) { stripes.classList.add("hero-bg"); rhero.insertBefore(stripes, rhero.firstChild); }
+    }
     var foot = document.querySelector(".eb-footer");
     if (foot) {
       /* On websites, put it just above Quarto's own footer (which holds the
