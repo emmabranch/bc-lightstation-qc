@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://emmabranch.github.io/bc-lightstation-qc/learned.html</loc>
+    <lastmod>2026-11-24T21:02:26.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emmabranch.github.io/bc-lightstation-qc/quality-control.html</loc>
+    <lastmod>2026-11-24T21:02:25.816Z</lastmod>
+  </url>
+  <url>
     <loc>https://emmabranch.github.io/bc-lightstation-qc/index.html</loc>
-    <lastmod>2026-11-24T20:54:32.478Z</lastmod>
+    <lastmod>2026-11-24T21:02:25.055Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emmabranch.github.io/bc-lightstation-qc/data.html</loc>
+    <lastmod>2026-11-24T21:02:25.510Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emmabranch.github.io/bc-lightstation-qc/heatwave.html</loc>
+    <lastmod>2026-11-24T21:02:26.039Z</lastmod>
   </url>
 </urlset>
