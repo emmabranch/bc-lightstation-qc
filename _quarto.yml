@@ -5,13 +5,16 @@ project:
     - index.qmd
   resources:
     - figures/*.png
+    - images/motif.svg
 
 website:
   title: "BC lightstation sea temperatures"
-  favicon: favicon.svg
+  favicon: images/favicon.png
   site-url: https://emmabranch.github.io/bc-lightstation-qc/
   repo-url: https://github.com/emmabranch/bc-lightstation-qc
   navbar:
+    logo: images/motif.svg
+    logo-alt: ""
     left:
       - href: "index.qmd#the-data"
         text: Data

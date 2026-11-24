@@ -32,6 +32,10 @@ peak     <- anom |> filter(month_date >= as.Date("2014-01-01"), month_date < as.
 
 ::::: {.hero-full .column-screen style="background-image: url('figures/banner_stripes.png');"}
 
+```{=html}
+<img class="hero-motif" src="images/motif.svg" alt="">
+```
+
 :::: {.hero-inner}
 
 [Personal data project by Emma Branch · R · Quarto · CIOOS open data]{.eyebrow}
@@ -45,8 +49,6 @@ Quality control, metadata, and the 2014 to 2016 marine heatwave, using daily dat
 [Background: coast-wide average sea surface temperature anomaly at 12 lightstations, one stripe per month, January 1991 to `r last_obs`. Red is warmer than the 1991 to 2020 average and blue is cooler.]{.hero-note}
 
 ::::
-
-<svg class="hero-wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,40 L1440,90 L0,90 Z" fill="#f6f4ef"/></svg>
 
 :::::
 

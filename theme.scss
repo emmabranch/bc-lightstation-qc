@@ -1,6 +1,7 @@
 /*-- scss:defaults --*/
-/* Fonts, navbar, headings, links, footer, hero, and stat boxes come from the shared brand kit
-   (_brand.yml and brand.scss). This file keeps only what is special to this site. */
+/* Fonts, navbar, headings, links, footer, hero, stat boxes, buttons, and map
+   outlines come from the shared brand kit (_brand.yml and brand.scss).
+   This file keeps only what is special to this site. */
 
 /*-- scss:rules --*/
 
@@ -9,22 +10,20 @@
   --eb-accent: #1f5f99;
   --eb-accent-2: #4aa3df;
   --eb-accent-light: #8ccaf2;
-  --eb-hero-glow: rgba(74, 163, 223, 0.28);
-  --eb-hero-shade: 8, 26, 40;
+  --eb-hero-glow: rgba(74, 163, 223, 0.22);
+  --eb-hero-shade: 8, 20, 32;
 }
 
 /* ---------- Spacing ---------- */
-h1, h2, h3 { letter-spacing: -0.01em; }
-h2 { margin-top: 2.8rem; }
 h3 { margin-top: 1.8rem; }
 html { scroll-padding-top: 70px; }
 
-/* ---------- Stat boxes: one colour each ---------- */
-.stat-box:nth-child(1) { border-top-color: #2471a3; }
-.stat-box:nth-child(2) { border-top-color: #16a085; }
-.stat-box:nth-child(3) { border-top-color: #8e44ad; }
-.stat-box:nth-child(4) { border-top-color: #d98c00; }
-.stat-box:nth-child(5) { border-top-color: #c0392b; }
+/* ---------- Stat boxes: ocean blues, tomato for the heatwave peak ---------- */
+.stat-box:nth-child(1) { border-top-color: #1f5f99; }
+.stat-box:nth-child(2) { border-top-color: #4aa3df; }
+.stat-box:nth-child(3) { border-top-color: #0f3b63; }
+.stat-box:nth-child(4) { border-top-color: #8ccaf2; }
+.stat-box:nth-child(5) { border-top-color: #FF5A36; }
 .stat-row.lift { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 @media (max-width: 900px) {
   .stat-row.lift { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -33,34 +32,23 @@ html { scroll-padding-top: 70px; }
 /* ---------- Note under the hero ---------- */
 .project-note {
   font-size: 0.95rem;
-  color: #3d4a55;
-  background: #eef5f7;
-  border-left: 4px solid #16a085;
-  border-radius: 8px;
-  padding: 0.7rem 1rem;
-  margin: 0.4rem 0 1.4rem;
+  color: #111111;
+  background: #B9A4FF;
+  border: 2px solid #111111;
+  padding: 0.8rem 1rem;
+  margin: 0.4rem 0 1.5rem;
 }
 
-/* ---------- Figures, map, and tables as soft panels ---------- */
+/* ---------- Figures and tables: white panels with an ink outline ---------- */
 main img.img-fluid {
-  background: #fff;
-  border-radius: 14px;
+  background: #ffffff;
+  border: 2px solid #111111;
   padding: 10px;
-  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08), 0 8px 22px rgba(16, 42, 67, 0.07);
+  box-shadow: 4px 4px 0 #111111;
 }
-.leaflet-container {
-  border-radius: 14px;
-  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08), 0 10px 26px rgba(16, 42, 67, 0.10);
-}
-.table {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  font-size: 0.95rem;
-  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.06);
-}
-.table thead th { background: #eef3f7; border-bottom: none; }
+main .leaflet-container { box-shadow: 6px 6px 0 #111111; }
+.table { background: #ffffff; border: 2px solid #111111; font-size: 0.95rem; }
+.table thead th { background: #F3EEE3; }
 
 /* ---------- Folded code ---------- */
-details.code-fold summary { color: #5b7083; font-size: 0.9rem; }
-div.sourceCode { border-radius: 10px; }
+details.code-fold summary { color: #5A544A; font-size: 0.9rem; font-family: "Space Mono", monospace; }
