@@ -1,0 +1,22 @@
+---
+title: "What I learned"
+---
+
+## Ocean data conventions that surprised me
+
+- **The station name is in a variable called `profile`.** It carries the CF attribute `cf_role = "timeseries_id"`, which is how software knows it identifies each time series.
+- **Variable names can be vocabulary codes.** `TEMPTC01` is a code from the BODC parameter vocabulary, used by many oceanographic data centres. The human-readable meaning is in the `standard_name` attribute: `sea_water_temperature`.
+- **Time is a sampling date, not a timestamp.** Samples are taken near daytime high tide, so the time of day shifts with the tides, creating the 14-day cycle in daily values.
+
+## Broader lessons
+
+- **Standard tests still need local knowledge.** The same threshold that catches errors on the outer coast flags real summer warmth in the Strait of Georgia.
+- **Annotate, don't fix.** Every source value is unchanged. Problems are flagged or documented, and users decide.
+- **Data have a history.** The whole-degree recording periods are invisible unless you look for them, and they change how some flags should be read.
+
+## What I'd do next
+
+- Add a climatology test (QARTOD's seasonal range check) using the 1991 to 2020 monthly statistics.
+- Compare my flags with the Python `ioos_qc` package on the same data.
+- Extend the QC to salinity.
+- Ask the data provider whether the whole-degree periods are already known and documented.

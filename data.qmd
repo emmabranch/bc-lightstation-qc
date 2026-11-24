@@ -1,0 +1,60 @@
+---
+title: "The data and outputs"
+---
+
+The British Columbia Shore Station Oceanographic Program (BCSOP) has collected daily sea surface temperature and salinity at BC lightstations since 1914. Samples are taken by bucket, near daytime high tide, using the same method for decades so the record stays consistent. CIOOS Pacific serves the data through **ERDDAP**, a data server where every request is a URL.
+
+I retrieved daily temperature from 1991 onward with the `rerddap` package and logged the exact request.
+
+```{r}
+#| eval: false
+library(rerddap)
+info_obj <- info("BCSOP_daily", url = "https://data.cioospacific.ca/erddap/")
+raw <- tabledap(info_obj,
+                fields = c("profile", "latitude", "longitude", "time", "TEMPTC01"),
+                "time>=1991-01-01",
+                url = "https://data.cioospacific.ca/erddap/")
+```
+
+I kept the 12 stations with at least 80% daily coverage over 1991 to 2020, the current climate normal period. That matches the number of stations the program says are currently active. Five stations with shorter records were excluded.
+
+## Outputs and metadata
+
+| File | Contents |
+|---|---|
+| `bc_lightstation_sst_qc.nc` | NetCDF: temperature plus five QC flag variables |
+| `bc_lightstation_sst_qc.csv` | The same data, one row per station-day |
+| `data_dictionary.csv` | Variable definitions, units, CF standard names, and allowed values |
+
+Two metadata conventions do different jobs:
+
+- **CF conventions** describe *what the numbers are*: units, standard names, and how coordinates and flags link to data.
+- **ACDD** describes *the dataset*: title, summary, creator, licence, and coverage. These are the attributes catalogues harvest for discovery.
+
+The NetCDF uses the CF "orthogonal multidimensional" layout for time series, where every station shares one time axis. Each flag variable uses a CF standard name such as `spike_test_quality_flag`, and the temperature variable lists them in `ancillary_variables`.
+
+I checked the file with the IOOS Compliance Checker. It passes all CF-1.8 checks. For ACDD-1.3, the only remaining items are four optional vertical attributes. I left these out on purpose: the data are surface samples with no depth variable, and adding them without one triggers a different warning. The full report is in `docs/compliance_report.txt`.
+
+## How to reproduce
+
+The full workflow is on [GitHub](https://github.com/emmabranch/bc-lightstation-qc). From the repository folder:
+
+```bash
+Rscript tests/test_qartod.R      # unit tests for the QC functions
+Rscript R/01_download.R          # retrieve data from CIOOS Pacific ERDDAP
+Rscript R/02_qc.R                # run QARTOD tests, write QC summary and plots
+Rscript R/03_write_outputs.R     # NetCDF, CSV, and data dictionary
+Rscript R/04_map.R               # animated map and heatmap
+Rscript R/06_banner.R            # banner stripes for this page
+compliance-checker --test=cf:1.8 --test=acdd:1.3 data/output/bc_lightstation_sst_qc.nc
+quarto render                    # this site, including the interactive map
+```
+
+`R/05_interactive_map.R` has no separate step: it runs automatically during `quarto render`, which builds the interactive map on the [Heatwave](heatwave.qmd) page.
+
+## Data, code, and licence
+
+- **Archived release:** Zenodo, [doi.org/10.5281/zenodo.24326157](https://doi.org/10.5281/zenodo.24326157)
+- **Source data:** British Columbia Shore Station Oceanographic Program, Institute of Ocean Sciences, Fisheries and Oceans Canada, via CIOOS Pacific. Contains information licensed under the Open Government Licence - Canada.
+- **Basemaps:** Natural Earth (animated map); Esri World Gray Canvas (interactive map).
+- **Code:** MIT licence. **Derived data:** CC-BY-4.0.

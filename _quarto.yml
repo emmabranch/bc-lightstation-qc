@@ -3,6 +3,10 @@ project:
   output-dir: _site
   render:
     - index.qmd
+    - data.qmd
+    - quality-control.qmd
+    - heatwave.qmd
+    - learned.qmd
   resources:
     - figures/*.png
     - images/motif.svg
@@ -16,15 +20,15 @@ website:
     logo: images/motif.svg
     logo-alt: ""
     left:
-      - href: "index.qmd#the-data"
+      - href: index.qmd
+        text: Overview
+      - href: data.qmd
         text: Data
-      - href: "index.qmd#quality-control"
+      - href: quality-control.qmd
         text: Quality control
-      - href: "index.qmd#outputs-and-metadata"
-        text: Outputs
-      - href: "index.qmd#the-2014-to-2016-marine-heatwave"
+      - href: heatwave.qmd
         text: Heatwave
-      - href: "index.qmd#what-i-learned"
+      - href: learned.qmd
         text: What I learned
     right:
       - text: "DOI"
@@ -39,3 +43,10 @@ format:
     theme: [flatly, brand, brand.scss, theme.scss]
     css: styles.css
     include-after-body: footer.html
+    code-fold: true
+    code-summary: "Show code"
+
+execute:
+  freeze: auto
+  warning: false
+  message: false
