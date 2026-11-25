@@ -16,6 +16,8 @@ library(ggplot2)
 library(sf)
 library(gganimate)
 source("R/config.R")
+source("R/theme_eb.R")   # shared chart style from the brand kit
+eb_use("bc-lightstation-qc")
 
 flagged <- readRDS("data/processed/flagged.rds")
 
@@ -75,10 +77,20 @@ bbox <- st_bbox(st_buffer(pts, 60000))
 
 lim <- 3   # colour scale limits in degC, symmetric so 0 is the neutral colour
 
+# The month for each frame, drawn as a label in the top-right corner of the map
+month_lab <- anom |>
+  distinct(month_date) |>
+  mutate(label = format(month_date, "%B %Y"),
+         x = bbox[["xmax"]] - 25000, y = bbox[["ymax"]] - 25000)
+
 p_map <- ggplot() +
-  geom_sf(data = basemap, fill = "grey92", colour = "grey60", linewidth = 0.2) +
-  geom_sf(data = pts, aes(fill = anomaly), shape = 21, size = 5, colour = "grey20") +
-  scale_fill_gradient2(low = "#2166ac", mid = "white", high = "#b2182b",
+  geom_sf(data = basemap, fill = eb_col$paper, colour = eb_col$muted, linewidth = 0.2) +
+  geom_sf(data = pts, aes(fill = anomaly), shape = 21, size = 5, colour = eb_col$ink) +
+  geom_label(data = month_lab, aes(x, y, label = label), hjust = 1, vjust = 1,
+             family = .eb$mono, fontface = "bold", size = 5.5, colour = eb_col$ink,
+             fill = eb_col$white, label.r = unit(0, "pt"),
+             label.padding = unit(0.4, "lines")) +
+  scale_fill_eb_div(reverse = TRUE,   # blue cooler, red warmer, paper at 0
                        limits = c(-lim, lim), oob = scales::squish,
                        breaks = -3:3,
                        labels = c("\u2264 -3", "-2", "-1", "0", "1", "2", "\u2265 3"),
@@ -86,22 +98,25 @@ p_map <- ggplot() +
                        guide = guide_colourbar(display = "gradient")) +
   coord_sf(xlim = bbox[c(1, 3)], ylim = bbox[c(2, 4)], crs = 3005) +
   labs(title = "BC lightstation sea surface temperature anomaly",
-       subtitle = "{format(as.Date(current_frame), '%B %Y')}",
-       caption = "Data: BCSOP daily lightstation SST via CIOOS Pacific ERDDAP (OGL-Canada). QARTOD-flagged values excluded. Basemap: Natural Earth.") +
-  theme_void(base_size = 12) +
-  theme(plot.background = element_rect(fill = "white", colour = NA),
-        plot.caption = element_text(size = 7, hjust = 0),
+       caption = "Data: BCSOP daily lightstation SST via CIOOS Pacific ERDDAP (OGL-Canada).\nQARTOD-flagged values excluded. Basemap: Natural Earth.") +
+  theme_void(base_size = 12, base_family = .eb$sans) +
+  theme(plot.background = element_rect(fill = eb_col$paper, colour = NA),
+        # Fixed space under the title: gganimate can lay out the title as if it had
+        # no height, which lets the map run up underneath it
+        plot.title = element_text(family = .eb$sans_heavy, size = 16, margin = margin(b = 26)),
+        plot.margin = margin(14, 14, 10, 14),
+        plot.caption = element_text(family = .eb$mono, colour = eb_col$muted, size = 7, hjust = 0),
         panel.background = element_rect(fill = "#e8f1f7", colour = NA),
-        legend.ticks = element_line(colour = "grey20"),
+        legend.ticks = element_line(colour = eb_col$ink),
         legend.position = "inside",
         legend.position.inside = c(0.15, 0.25),
-        legend.background = element_rect(fill = "white", colour = "grey80"),
+        legend.background = element_rect(fill = eb_col$white, colour = eb_col$ink),
         legend.margin = margin(8, 10, 16, 8)) +
         transition_manual(month_date)
 
 dir.create("figures", showWarnings = FALSE)
 anim <- animate(p_map, nframes = n_distinct(anom$month_date), fps = 4,
-                width = 800, height = 800, res = 110,
+                width = 800, height = 800, res = 110, device = "ragg_png", bg = eb_col$paper,
                 renderer = gifski_renderer())
 anim_save("figures/sst_anomaly_2013_2017.gif", anim)
 
@@ -110,13 +125,14 @@ p_heat <- anom |>
   mutate(station_label = reorder(station_label, latitude)) |>
   ggplot(aes(month_date, station_label, fill = anomaly)) +
   geom_tile() +
-  scale_fill_gradient2(low = "#2166ac", mid = "white", high = "#b2182b",
+  scale_fill_eb_div(reverse = TRUE,   # blue cooler, red warmer, paper at 0
                        limits = c(-lim, lim), oob = scales::squish,
                        name = "°C") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y", expand = c(0, 0)) +
   labs(title = "Monthly SST anomaly at BC lightstations, 2013 to 2017",
        subtitle = "Relative to each station's 1991–2020 monthly mean; north at top",
        x = NULL, y = NULL) +
-  theme_minimal(base_size = 11) +
-  theme(panel.grid = element_blank())
-ggsave("figures/sst_anomaly_heatmap.png", p_heat, width = 9, height = 4.5, dpi = 150)
+  theme_eb(base_size = 11, grid = "none") +
+  theme(axis.line.x = element_blank(), legend.position = "right")
+ggsave("figures/sst_anomaly_heatmap.png", p_heat, width = 9, height = 4.5, dpi = 300,
+       device = ragg::agg_png)

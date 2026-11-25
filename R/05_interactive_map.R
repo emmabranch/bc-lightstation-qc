@@ -30,13 +30,13 @@ sparkline_svg <- function(d, w = 230, h = 95, lim = 3.5) {
   seg <- cumsum(c(1, diff(as.numeric(d$month_date)) > 32 | diff(ok) != 0))
   lines <- vapply(split(seq_len(nrow(d))[ok], seg[ok]), function(i) {
     pts <- paste(sprintf("%.1f,%.1f", sx(d$month_date[i]), sy(d$anomaly[i])), collapse = " ")
-    sprintf('<polyline points="%s" fill="none" stroke="#333" stroke-width="1.4"/>', pts)
+    sprintf('<polyline points="%s" fill="none" stroke="#111111" stroke-width="1.4"/>', pts)
   }, character(1))
   ylab <- paste0(
-    sprintf('<text x="%d" y="%.1f" font-size="9" text-anchor="end" fill="#555">%s</text>',
+    sprintf('<text x="%d" y="%.1f" font-size="9" text-anchor="end" fill="#5A544A">%s</text>',
             pad_l - 3, sy(c(3, 0, -3)) + 3, c("+3", "0", "-3")), collapse = "")
   xlab <- paste0(
-    sprintf('<text x="%.1f" y="%d" font-size="9" text-anchor="middle" fill="#555">%s</text>',
+    sprintf('<text x="%.1f" y="%d" font-size="9" text-anchor="middle" fill="#5A544A">%s</text>',
             sx(as.Date(sprintf("%d-07-01", 2013:2017))), h - 3, 2013:2017), collapse = "")
   sprintf('<svg width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="Monthly SST anomaly 2013 to 2017">%s%s%s%s%s</svg>',
           w, h, w, h, band, zero, paste(lines, collapse = ""), ylab, xlab)
@@ -76,7 +76,8 @@ build_interactive_map <- function(
   # Binned diverging palette: easier to read than a continuous scale for
   # annual means, which are smaller than monthly anomalies
   bins   <- c(-Inf, -1.5, -1, -0.5, 0.5, 1, 1.5, Inf)
-  cols   <- c("#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b")
+  # Brand diverging colours, blue cooler to red warmer, paper for near normal
+  cols   <- c("#1F33B5", "#6678D8", "#ACB6E7", "#F3EEE3", "#E6AB95", "#CB6852", "#A3241A")
   labels <- c("below -1.5", "-1.5 to -1", "-1 to -0.5", "-0.5 to +0.5 (near normal)",
               "+0.5 to +1", "+1 to +1.5", "above +1.5")
   pal <- colorBin(cols, domain = c(-10, 10), bins = bins, na.color = "#bdbdbd")
@@ -86,12 +87,12 @@ build_interactive_map <- function(
   popup_html <- function(r) {
     val <- if (is.na(r$anomaly)) "not enough data" else sprintf("%+.1f &deg;C", r$anomaly)
     paste0(
-      "<div style='font-family:sans-serif;font-size:13px;max-width:240px'>",
+      "<div style='font-family:\"Bricolage Grotesque\",sans-serif;font-size:13px;max-width:240px'>",
       "<strong>", htmlEscape(r$station_label), "</strong><br>",
       r$year, " annual mean anomaly: <strong>", val, "</strong><br>",
-      "<span style='color:#555'>Data used: ", r$first_year, " to ", r$last_year, "</span>",
+      "<span style='color:#5A544A'>Data used: ", r$first_year, " to ", r$last_year, "</span>",
       "<div style='margin-top:6px'>", sparks[[r$station]], "</div>",
-      "<span style='color:#555;font-size:11px'>Monthly anomaly, &deg;C vs 1991-2020. ",
+      "<span style='color:#5A544A;font-size:11px'>Monthly anomaly, &deg;C vs 1991-2020. ",
       "Shaded: 2014 to 2016.</span></div>")
   }
 
@@ -105,7 +106,7 @@ build_interactive_map <- function(
     m <- m |>
       addCircleMarkers(
         data = d, lng = ~longitude, lat = ~latitude, group = as.character(y),
-        radius = 9, color = "#333333", weight = 1, opacity = 1,
+        radius = 9, color = "#111111", weight = 1, opacity = 1,
         fillColor = pal(d$anomaly), fillOpacity = 0.95,
         label = lapply(sprintf("%s: %s", htmlEscape(d$station_label),
                                ifelse(is.na(d$anomaly), "no data",

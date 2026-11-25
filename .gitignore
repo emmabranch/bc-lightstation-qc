@@ -11,3 +11,4 @@ data/processed/*.rds
 **/*.quarto_ipynb
 
 PLAN.md
+.DS_Store

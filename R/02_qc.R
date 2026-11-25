@@ -6,6 +6,8 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 source("R/config.R")
+source("R/theme_eb.R")   # shared chart style from the brand kit
+eb_use("bc-lightstation-qc")
 source("R/qartod.R")
 
 raw <- readr::read_csv("data/raw/BCSOP_daily_latest.csv", show_col_types = FALSE)
@@ -73,14 +75,25 @@ for (st in head(keep, 3)) {
     mutate(flag = factor(flag_labels[as.character(qc_aggregate)],
                          levels = c("PASS", "NOT_EVALUATED", "SUSPECT", "FAIL", "MISSING"))) |>
     ggplot(aes(date, sst)) +
-    geom_line(colour = "grey70", linewidth = 0.3) +
-    geom_point(aes(colour = flag), size = 0.8) +
-    scale_colour_manual(values = c(PASS = "#1b7837", NOT_EVALUATED = "grey50",
-                                   SUSPECT = "#e08214", FAIL = "#b2182b", MISSING = "black"),
-                        drop = FALSE) +
-    labs(title = paste("QARTOD aggregate flags:", st),
-         x = NULL, y = "Sea surface temperature (°C)", colour = "Flag") +
-    theme_minimal()
+    geom_line(colour = eb_col$context, linewidth = 0.3) +
+    # QARTOD colours (green pass, yellow suspect, red fail), plus a shape for each
+    # flag so the plot still reads for colourblind readers and in greyscale
+    geom_point(aes(fill = flag, shape = flag, size = flag), colour = eb_col$ink, stroke = 0.3,
+               show.legend = TRUE) +   # keep legend keys for flags with no points
+    scale_fill_manual(values = c(PASS = "#00664B", NOT_EVALUATED = eb_col$context,
+                                 SUSPECT = eb_col$sunflower, FAIL = "#E0431B", MISSING = eb_col$ink),
+                      drop = FALSE) +
+    scale_shape_manual(values = c(PASS = 21, NOT_EVALUATED = 21, SUSPECT = 24, FAIL = 23, MISSING = 4),
+                       drop = FALSE) +
+    scale_size_manual(values = c(PASS = 0.9, NOT_EVALUATED = 1.2, SUSPECT = 2.2, FAIL = 2.6, MISSING = 1.5),
+                      drop = FALSE) +
+    labs(title = paste("QARTOD aggregate flags:",
+                       tools::toTitleCase(gsub("_", " ", st))),   # race_rocks_lightstation -> Race Rocks Lightstation
+         x = NULL, y = "Sea surface temperature (°C)", fill = "Flag", shape = "Flag", size = "Flag") +
+    # Show every flag's symbol in the legend, even ones with no points in this window
+    guides(fill = guide_legend(override.aes = list(shape = c(21, 21, 24, 23, 4),
+                                                   size = c(2, 2, 3, 3.2, 2.4)))) +
+    theme_eb(base_size = 11)
   ggsave(sprintf("figures/qc_%s.png", gsub("[^A-Za-z0-9]", "_", st)), p,
-         width = 8, height = 3.5, dpi = 150)
+         width = 8, height = 3.5, dpi = 300, device = ragg::agg_png)
 }

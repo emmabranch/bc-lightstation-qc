@@ -46,6 +46,11 @@ format:
     code-fold: true
     code-summary: "Show code"
 
+knitr:
+  opts_chunk:
+    dev: "ragg_png"
+    fig.retina: 3
+
 execute:
   freeze: auto
   warning: false
